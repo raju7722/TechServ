@@ -14,9 +14,14 @@ const userAvatarSrc =
 export default function Header() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const profileMenuRef = useRef(null);
 
   useEffect(() => {
+    function handleScroll() {
+      setIsScrolled(window.scrollY > 8);
+    }
+
     function handlePointerDown(event) {
       if (!profileMenuRef.current?.contains(event.target)) {
         setIsProfileOpen(false);
@@ -30,20 +35,39 @@ export default function Header() {
       }
     }
 
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
+      window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
   return (
-    <header className="relative z-50 h-[96px] bg-white">
-      <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between px-8 max-md:px-5">
-        <Logo />
-        {/* <nav className="hidden items-center gap-10 text-[16px] font-medium text-[#171827] lg:flex">
+    <header
+      className={`sticky top-0  z-[9999] w-full transition-all duration-300 ease-out`}
+    >
+      <div className="mx-auto w-full max-w-[1580px] px-3 sm:px-6 md:px-10 lg:px-8">
+        <div
+          className={`flex items-center relative top-0 justify-between transition-all gap-3 border py-0 duration-300 sm:gap-6 p-2 ${isScrolled
+              ? "rounded-full border-white/70 backdrop-blur-2xl backdrop-saturate-150 top-3  h-[60px] shadow-[0_14px_28px_rgba(80,0,254,0.14)] bg-[linear-gradient(135deg,rgba(255,255,255,0.72),rgba(255,255,255,0.38))]"
+              : "border-transparent h-[100px] bg-transparent shadow-none"
+            }`}
+        >
+          <div className={`transition-all 
+          
+          ${isScrolled
+              ? "scale-[1]  origin-top-left mt-0"
+              : " scale-[1.2] origin-top-left -mt-2"
+            }`
+            }>
+            <Logo />
+          </div>
+          {/* <nav className="hidden items-center gap-10 text-[16px] font-medium text-[#171827] lg:flex">
           <a href="#dashboard">Dashboard</a>
           <a href="#analytics">Analytics</a>
           <a href="#settings">Settings</a>
@@ -108,6 +132,7 @@ export default function Header() {
         >
           {isMobileNavOpen ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
         </button> */}
+        </div>
       </div>
 
       {isMobileNavOpen && (
