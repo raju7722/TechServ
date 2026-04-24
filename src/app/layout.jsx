@@ -3,6 +3,14 @@ import "../styles.css";
 export const metadata = {
   title: "TechServe Enterprise Platform",
   description: "TechServe Enterprise Platform",
+  icons: {
+    icon: [
+      {
+        url: "/favicon.svg",
+        type: "image/svg+xml",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({ children }) {

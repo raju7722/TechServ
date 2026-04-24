@@ -137,6 +137,141 @@ a {
   background: #e5e8f2;
 }
 
+.site-header-shell {
+  position: sticky;
+  isolation: isolate;
+  border-color: #5000fe18;
+  background:
+    radial-gradient(circle at 13% 20%, rgba(150, 100, 250, 0.2), transparent 34%),
+    radial-gradient(circle at 82% 12%, rgba(80, 0, 254, 0.14), transparent 32%),
+    linear-gradient(135deg, rgba(243, 240, 249, 0.96) 0%, rgba(252, 251, 255, 0.9) 48%, rgba(239, 236, 247, 0.96) 100%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  box-shadow: 0 10px 30px rgba(80, 0, 254, 0.08);
+}
+
+.site-header-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(80, 0, 254, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(80, 0, 254, 0.026) 1px, transparent 1px);
+  background-size: 7.5rem 7.5rem;
+  opacity: 0.75;
+}
+
+.site-header-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), transparent 72%);
+}
+
+.site-header-shell.is-scrolled {
+  border-color: #5000fe1f;
+  background:
+    radial-gradient(circle at 13% 20%, rgba(150, 100, 250, 0.24), transparent 34%),
+    radial-gradient(circle at 82% 12%, rgba(80, 0, 254, 0.18), transparent 32%),
+    linear-gradient(135deg, rgba(243, 240, 249, 0.98) 0%, rgba(252, 251, 255, 0.96) 48%, rgba(239, 236, 247, 0.98) 100%);
+  box-shadow: 0 16px 40px rgba(80, 0, 254, 0.14);
+}
+
+.site-footer-shell {
+  --color-primary-blue: #5000fe;
+  --color-secondary-purple: #9664fa;
+  --color-brand-black: #282828;
+  --color-muted: #615c6e;
+  --color-border-subtle: #5000fe1f;
+  --color-visual-surface: #5000fe0f;
+  --color-visual-surface-secondary: #9664fa24;
+  --color-glow-primary: #5000fe29;
+  --color-glow-secondary: #9664fa33;
+  background:
+    radial-gradient(circle at 18% 18%, #9664fa14, #0000 30%),
+    radial-gradient(circle at 78% 12%, #5000fe0b, #0000 30%),
+    linear-gradient(135deg, #f3f0f9fa 0%, #faf9fdf5 48%, #efecf7fa 100%);
+}
+
+.footer-ambient-gradient {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.footer-ambient-gradient::before,
+.footer-ambient-gradient::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -55% -18%;
+  will-change: transform, opacity;
+}
+
+.footer-ambient-gradient::before {
+  background:
+    radial-gradient(ellipse at 16% 34%, var(--color-glow-primary) 0%, transparent 42%),
+    radial-gradient(ellipse at 72% 26%, var(--color-glow-secondary) 0%, transparent 38%),
+    radial-gradient(ellipse at 48% 78%, var(--color-visual-surface-secondary) 0%, transparent 46%);
+  filter: blur(34px) saturate(1.08);
+  opacity: 0.5;
+  animation: footer-gradient-wash 30s ease-in-out infinite;
+}
+
+.footer-ambient-gradient::after {
+  background:
+    linear-gradient(108deg, transparent 10%, var(--color-visual-surface) 34%, transparent 58%),
+    radial-gradient(ellipse at 88% 64%, var(--color-glow-primary) 0%, transparent 36%);
+  filter: blur(28px);
+  mix-blend-mode: multiply;
+  opacity: 0.28;
+  animation: footer-gradient-sweep 24s ease-in-out infinite;
+}
+
+@keyframes footer-gradient-wash {
+  0% {
+    opacity: 0.68;
+    transform: translate(-4%, -5%) rotate(0) scale(1.02);
+  }
+
+  35% {
+    opacity: 0.86;
+    transform: translate(3%, 2%) rotate(7deg) scale(1.08);
+  }
+
+  70% {
+    opacity: 0.74;
+    transform: translate(6%, -2%) rotate(-5deg) scale(1.04);
+  }
+
+  to {
+    opacity: 0.68;
+    transform: translate(-4%, -5%) rotate(0) scale(1.02);
+  }
+}
+
+@keyframes footer-gradient-sweep {
+  0% {
+    opacity: 0.34;
+    transform: translate(-10%) scaleX(0.96);
+  }
+
+  50% {
+    opacity: 0.52;
+    transform: translate(9%, 3%) scaleX(1.08);
+  }
+
+  to {
+    opacity: 0.34;
+    transform: translate(-10%) scaleX(0.96);
+  }
+}
+
 @media (max-width: 767px) {
   .stat-divider:not(:first-child)::before {
     display: none;
