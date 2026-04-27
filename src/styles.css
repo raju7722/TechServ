@@ -102,7 +102,7 @@ a {
 .agent-card {
   position: relative;
   isolation: isolate;
-  border: 1px solid rgba(255, 255, 255, 0.34);
+  border: 1px solid #5000fe1f;
   background: transparent;
 }
 
@@ -112,10 +112,12 @@ a {
   inset: 0;
   z-index: 0;
   border-radius: inherit;
-  background: linear-gradient(180deg, rgba(233, 222, 255, 0.54) 0%, rgba(248, 251, 255, 0.78) 100%);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(150, 100, 250, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(246, 241, 255, 0.78) 100%);
   -webkit-backdrop-filter: blur(38px) saturate(150%);
   backdrop-filter: blur(38px) saturate(150%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.54), 0 18px 34px rgba(80, 0, 254, 0.12);
 }
 
 .agent-card-content {
