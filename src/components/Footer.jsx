@@ -251,7 +251,7 @@ export default function Footer() {
                 width="428"
               />
             </Link>
-            {/*  */}
+            
           </div>
           <p className="mt-7 text-[0.95rem] font-normal leading-6 text-[var(--color-muted)]">
             The AI Operating System for IT Sales
