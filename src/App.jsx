@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
 import {
   BidBrainIcon,
   CalculatorIcon,
@@ -37,6 +36,7 @@ const agents = [
     type: "sales",
     loginPath: "/login/bidbrain-pre",
     logoImage: BidBrainPre,
+    anchorId: "bidbrain-pre",
   },
   {
     title: "BidBrain",
@@ -52,6 +52,7 @@ const agents = [
     type: "sales",
     loginPath: "/login/bidbrain-post",
     logoImage: BidBrainPost,
+    anchorId: "bidbrain-post",
   },
   {
     title: "Contract",
@@ -59,7 +60,7 @@ const agents = [
     tag: "Legal & Compliance Agent",
     icon: ContractIcon,
     button: "Launch Contract",
-    buttontext: "ai",
+    buttontext: "AI",
     description:
       "Intelligent contract management agent that automates contract creation, review, and compliance monitoring with advanced legal AI capabilities.",
     features: ["Contract Analysis", "Risk Assessment", "Compliance Tracking"],
@@ -67,6 +68,7 @@ const agents = [
     type: "legal",
     loginPath: "/login/contract-ai",
     logoImage: ContractAI,
+    anchorId: "contract-ai",
   },
 ];
 
@@ -114,18 +116,14 @@ const upcoming = [
 ];
 
 function AgentCard({ agent }) {
-  const router = useRouter();
   const Icon = agent.icon;
   const logoSrc = typeof agent.logoImage === "string" ? agent.logoImage : agent.logoImage.src;
-  const handleLaunch = () => {
-    router.push(agent.loginPath);
-  };
 
   return (
-    <article className="agent-card w-full overflow-hidden rounded-[6px] shadow-card">
+    <article id={agent.anchorId} className="agent-card w-full overflow-hidden rounded-[6px] shadow-card">
       <div className="agent-card-content px-8 pb-6 pt-8 max-md:px-5 max-md:pt-6 max-[380px]:px-4">
         <div className="mb-5 flex items-start gap-4 max-md:gap-3 max-[380px]:gap-2">
-          <div className="grid h-[52px] w-[52px] shrink-0 place-items-center rounded-[8px] bg-[#5000fe0f] text-[#5000FE] shadow-[0_14px_28px_rgba(80,0,254,0.12)] max-md:h-11 max-md:w-11 max-[380px]:h-10 max-[380px]:w-10">
+          <div className="grid h-[52px] w-[52px] shrink-0 place-items-center rounded-[8px] bg-[#ffffff85] text-[#5000FE] max-md:h-11 max-md:w-11 max-[380px]:h-10 max-[380px]:w-10">
             <Icon className="h-6 w-6 max-md:h-5 max-md:w-5" strokeWidth={2} />
           </div>
           <div className="min-w-0 pt-1">
@@ -149,12 +147,12 @@ function AgentCard({ agent }) {
             </li>
           ))}
         </ul>
-        <button type="button" className="h-[48px] w-full px-5 hover:bg-[linear-gradient(108deg,_#5000FE_0%,_#9664FA_100%)] font-bold text-[#5000FE] hover:text-white max-md:h-12 border border-[#5000FE]  hover:shadow-[0_18px_40px_0_rgba(80,_0,_254,_0.24)] rounded-full " onClick={handleLaunch}>
+        <a href={agent.loginPath} className="flex h-[48px] w-full items-center justify-center px-5 hover:bg-[linear-gradient(108deg,_#5000FE_0%,_#9664FA_100%)] font-bold text-[#5000FE] hover:text-white max-md:h-12 border border-[#5000FE]  hover:shadow-[0_18px_40px_0_rgba(80,_0,_254,_0.24)] rounded-full ">
           {agent.button}
           <span className="italic font-light">
             {agent.buttontext}
           </span>
-        </button>
+        </a>
       </div>
     </article>
   );
@@ -298,7 +296,7 @@ export default function App() {
         </p>
       </section>
 
-      <section className="relative z-10 -mt-[170px] max-lg:-mt-[220px] max-md:-mt-[190px]">
+      <section id="platform" className="relative z-10 -mt-[170px] max-lg:-mt-[220px] max-md:-mt-[190px]">
         <div className="mx-auto grid max-w-[1600px] grid-cols-1 gap-10 px-8 md:grid-cols-2 lg:grid-cols-3 max-lg:gap-8 max-md:gap-6 max-md:px-5">
           {agents.map((agent) => (
             <AgentCard key={agent.loginPath} agent={agent} />

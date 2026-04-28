@@ -2,6 +2,8 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const PREMIUM_EASE = [0.25, 0.8, 0.25, 1];
 const VIEWPORT_ONCE = { once: true, margin: "-50px" };
@@ -25,9 +27,9 @@ const footerSections = [
   {
     title: "Company",
     links: [
-      { label: "About", href: "/about" },
-      { label: "Contact us", href: "#contact" },
-      { label: "Community", href: "/community" },
+      { label: "About", href: "https://techserv.ai/about" },
+      { label: "Contact us", href: "https://techserv.ai/contact" },
+      { label: "Community", href: "https://techserv.ai/community" },
     ],
   },
   {
@@ -54,19 +56,103 @@ const footerSections = [
   },
 ];
 
-function FooterSection({ section }) {
+function getHeaderOffset() {
+  if (typeof document === "undefined") {
+    return 0;
+  }
+
+  const header = document.querySelector("header");
+  return (header?.getBoundingClientRect().height ?? 0) + 16;
+}
+
+function getIsExternalHref(href) {
+  return /^https?:\/\//.test(href);
+}
+
+function getAriaCurrent(isActive, href) {
+  if (!isActive) {
+    return undefined;
+  }
+
+  return href.startsWith("#") ? "location" : "page";
+}
+
+function scrollToHashTarget(href, behavior = "smooth") {
+  const target = document.getElementById(href.slice(1));
+
+  if (!target) {
+    return false;
+  }
+
+  const targetTop = target.getBoundingClientRect().top + window.scrollY - getHeaderOffset();
+
+  window.scrollTo({
+    behavior,
+    top: Math.max(targetTop, 0),
+  });
+
+  return true;
+}
+
+function FooterLink({ children, className, href, onHashNavigate, isActive }) {
+  const ariaCurrent = getAriaCurrent(isActive, href);
+  const activeStyle = isActive ? { color: "var(--color-primary-blue)" } : undefined;
+
+  if (href.startsWith("#")) {
+    return (
+      <a
+        aria-current={ariaCurrent}
+        className={className}
+        href={href}
+        onClick={(event) => onHashNavigate(event, href)}
+        style={activeStyle}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  if (getIsExternalHref(href)) {
+    return (
+      <a
+        aria-current={ariaCurrent}
+        className={className}
+        href={href}
+        rel="noopener noreferrer"
+        style={activeStyle}
+        target="_blank"
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <Link aria-current={ariaCurrent} className={className} href={href} style={activeStyle}>
+      {children}
+    </Link>
+  );
+}
+
+function FooterSection({ activeHref, onHashNavigate, pathname, section }) {
   const headingClass =
     "text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-[var(--color-secondary-purple)]";
   const linkClass =
     "text-[0.88rem] leading-6 text-[var(--color-brand-black)] transition-colors duration-200 hover:text-[var(--color-primary-blue)]";
+  const getIsActive = (href) => (href.startsWith("#") ? activeHref === href : pathname === href);
 
   return (
     <section>
       <h2>
         {section.href ? (
-          <a className={`${headingClass} transition-colors duration-200 hover:text-[var(--color-primary-blue)]`} href={section.href}>
+          <FooterLink
+            className={`${headingClass} transition-colors duration-200 hover:text-[var(--color-primary-blue)]`}
+            href={section.href}
+            isActive={getIsActive(section.href)}
+            onHashNavigate={onHashNavigate}
+          >
             {section.title}
-          </a>
+          </FooterLink>
         ) : (
           <span className={headingClass}>{section.title}</span>
         )}
@@ -75,9 +161,14 @@ function FooterSection({ section }) {
         <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2">
           {section.links.map((link) => (
             <li key={link.label}>
-              <a className={linkClass} href={link.href}>
+              <FooterLink
+                className={linkClass}
+                href={link.href}
+                isActive={getIsActive(link.href)}
+                onHashNavigate={onHashNavigate}
+              >
                 {link.label}
-              </a>
+              </FooterLink>
             </li>
           ))}
         </ul>
@@ -87,8 +178,46 @@ function FooterSection({ section }) {
 }
 
 export default function Footer() {
+  const pathname = usePathname();
+  const [activeHref, setActiveHref] = React.useState("");
   const mainSections = footerSections.filter((section) => section.title !== "Legal");
   const legalSection = footerSections.find((section) => section.title === "Legal");
+
+  React.useEffect(() => {
+    function updateActiveHash() {
+      setActiveHref(window.location.hash);
+    }
+
+    updateActiveHash();
+    window.addEventListener("hashchange", updateActiveHash);
+    window.addEventListener("popstate", updateActiveHash);
+
+    return () => {
+      window.removeEventListener("hashchange", updateActiveHash);
+      window.removeEventListener("popstate", updateActiveHash);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (!window.location.hash) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      scrollToHashTarget(window.location.hash, "auto");
+    });
+  }, []);
+
+  const handleHashNavigate = React.useCallback((event, href) => {
+    event.preventDefault();
+    setActiveHref(href);
+
+    if (window.location.hash !== href) {
+      window.history.pushState(null, "", href);
+    }
+
+    scrollToHashTarget(href);
+  }, []);
 
   return (
     <motion.footer
@@ -131,12 +260,23 @@ export default function Footer() {
         <div className="border-t border-[var(--color-border-subtle)] pt-8 lg:border-l lg:border-t-0 lg:px-12 lg:py-10">
           <nav aria-label="Footer" className="space-y-8">
             {mainSections.map((section) => (
-              <FooterSection key={section.title} section={section} />
+              <FooterSection
+                activeHref={activeHref}
+                key={section.title}
+                onHashNavigate={handleHashNavigate}
+                pathname={pathname}
+                section={section}
+              />
             ))}
           </nav>
           {legalSection && (
             <div className="mt-8">
-              <FooterSection section={legalSection} />
+              <FooterSection
+                activeHref={activeHref}
+                onHashNavigate={handleHashNavigate}
+                pathname={pathname}
+                section={legalSection}
+              />
             </div>
           )}
         </div>
