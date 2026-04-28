@@ -218,7 +218,7 @@ function QuickActionCards() {
             <span className="min-w-0 truncate">Task Breakdown</span>
           </p>
           <p className="mb-4 flex min-w-0 items-center gap-2 text-[15px] text-[#615c6e] max-xl:text-[14px]">
-            <span className="grid h-4 w-4 place-items-center rounded-full border border-[#9664fa4b] text-[10px] text-[#9664FA]">!</span>
+            <span className="grid h-4 w-4 place-items-center rounded-full border border-[#5000FE] text-[10px] text-[#5000FE]">!</span>
             <span className="min-w-0 truncate">Resource Allocation</span>
           </p>
           <p className="mt-4 text-[14px] text-[#615c6e]">✧ AI generating...</p>
@@ -245,7 +245,7 @@ function QuickActionCards() {
             <span className="min-w-0 truncate">Clause analysis complete</span>
           </p>
           <p className="mb-4 flex min-w-0 items-center gap-2 text-[15px] text-[#615c6e] max-xl:text-[14px]">
-            <span className="grid h-4 w-4 place-items-center rounded-full border border-[#9664fa4b] text-[10px] text-[#9664FA]">!</span>
+            <span className="grid h-4 w-4 place-items-center rounded-full border border-[#5000FE] text-[10px] text-[#5000FE]">!</span>
             <span className="min-w-0 truncate">2 risks identified</span>
           </p>
           <div className="h-[6px] rounded-full bg-white/80">
