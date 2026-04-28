@@ -241,14 +241,16 @@ export default function Footer() {
       <div className="relative mx-auto grid w-full max-w-[1600px] px-5 py-8 sm:px-8 lg:grid-cols-[minmax(20rem,0.96fr)_minmax(0,1fr)] lg:px-0 lg:py-0">
         <div className="flex lg:min-h-[18rem] pb-3 flex-col items-start px-0 lg:px-8 lg:py-10 xl:px-10">
           <div className="relative -ml-1">
-            <img
-              alt="TECHSERV.ai"
-              className="h-auto w-[160px] sm:w-[176px]"
-              height="126"
-              loading="lazy"
-              src="/techserv-logo.svg"
-              width="428"
-            />
+            <Link aria-label="TechServ home" className="inline-flex items-center" href="https://techserv.ai/">
+              <img
+                alt="TECHSERV.ai"
+                className="h-auto w-[160px] sm:w-[176px]"
+                height="126"
+                loading="lazy"
+                src="/techserv-logo.svg"
+                width="428"
+              />
+            </Link>
           </div>
           <p className="mt-7 text-[0.95rem] font-normal leading-6 text-[var(--color-muted)]">
             The AI Operating System for IT Sales

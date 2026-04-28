@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import Logo from "./Logo";
 import {
   ChevronDownIcon,
@@ -65,7 +66,9 @@ export default function Header() {
               : " scale-[1.2] origin-top-left -mt-2"
             }`
             }>
-            <Logo />
+            <Link aria-label="TechServ home" className="inline-flex items-center" href="https://techserv.ai/">
+              <Logo />
+            </Link>
           </div>
           {/* <nav className="hidden items-center gap-10 text-[16px] font-medium text-[#171827] lg:flex">
           <a href="#dashboard">Dashboard</a>
